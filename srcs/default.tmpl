@@ -1,0 +1,41 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+	return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl default_server;
+	listen [::]:443 ssl default_server;
+
+	ssl on;
+	ssl_certificate		/etc/nginx/ssl/server.crt;
+	ssl_certificate_key	/etc/nginx/ssl/server.key;
+
+	root /var/www/html;
+	index index.html index.htm index.php index.nginx-debian.html;
+
+	access_log /var/log/nginx/access.log;
+	error_log /var/log/nginx/error.log;
+
+	location / {
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+		try_files $uri $uri/ =404;
+		autoindex {{ var "AUTOINDEX" | default "on" }};
+	}
+
+	location ~ \.php$ {
+		include snippets/fastcgi-php.conf;
+	
+		# With php-fpm (or other unix sockets):
+		fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+		# With php-cgi (or other tcp sockets):
+		# fastcgi_pass 127.0.0.1:9000;
+	}
+
+	location /wordpress/wp-config.php {
+		deny all;
+	}
+}
