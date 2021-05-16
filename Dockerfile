@@ -6,19 +6,19 @@
 #    By: kefujiwa <kefujiwa@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/07 18:28:18 by kefujiwa          #+#    #+#              #
-#    Updated: 2021/05/17 01:11:10 by kefujiwa         ###   ########.fr        #
+#    Updated: 2021/05/17 01:19:33 by kefujiwa         ###   ########.fr        #
 # **************************************************************************** #
 
 # set the base image from debian:buster
-FROM debian:buster
+FROM	debian:buster
 
 # set maintainer and version information
-LABEL maintainer="Kenshi Fujiwara <kefujiwa@student.42tokyo.jp>"
-LABEL version="1.0"
-LABEL description="LEMP stack on an Devian Buster server"
+LABEL	maintainer="Kenshi Fujiwara <kefujiwa@student.42tokyo.jp>"
+LABEL	version="1.0"
+LABEL	description="LEMP stack on an Devian Buster server"
 
 # install necessary tools
-RUN apt-get update; \
+RUN	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		default-mysql-server \
 		default-mysql-client \
@@ -34,10 +34,10 @@ RUN apt-get update; \
 	rm -rf /var/lib/apt/lists/*
 
 # copy config files to tmp directory
-COPY srcs/* /tmp/
+COPY	srcs/* /tmp/
 
 # wget wordpress
-RUN mkdir -p /var/www/html/wordpress; \
+RUN	mkdir -p /var/www/html/wordpress; \
 	wget -O wordpress.tar.gz --no-check-certificate https://wordpress.org/latest.tar.gz; \
 	tar -xvzf wordpress.tar.gz -C /var/www/html/wordpress --strip-components 1; \
 	rm wordpress.tar.gz; \
@@ -45,7 +45,7 @@ RUN mkdir -p /var/www/html/wordpress; \
 	chown -R www-data:www-data var/www/html/wordpress;
 
 # wget phpmyadmin
-RUN mkdir -p /var/www/html/phpmyadmin; \
+RUN	mkdir -p /var/www/html/phpmyadmin; \
 	wget -O phpmyadmin.tar.gz --no-check-certificate https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.tar.gz; \
 	tar -xvzf phpmyadmin.tar.gz -C /var/www/html/phpmyadmin --strip-components 1; \
 	rm phpmyadmin.tar.gz; \
@@ -53,7 +53,7 @@ RUN mkdir -p /var/www/html/phpmyadmin; \
 	chown -R www-data:www-data var/www/html/phpmyadmin;
 
 # run create_tables.sql
-RUN service mysql start; \
+RUN	service mysql start; \
 	mysql -u root < /var/www/html/phpmyadmin/sql/create_tables.sql; \
 	mysql -u root < /tmp/setup.sql; \
 	rm -f /tmp/setup_mysql;
@@ -72,16 +72,16 @@ RUN	mkdir -p /etc/nginx/ssl; \
 
 # move supervisord.conf under supervisor directory
 # move template config file of nginx to sites-available directory
-RUN mv /tmp/supervisord.conf /etc/supervisor/conf.d/supervisord.conf; \
+RUN	mv /tmp/supervisord.conf /etc/supervisor/conf.d/supervisord.conf; \
 	mv /tmp/default.tmpl /etc/nginx/sites-available/default.tmpl;
 
 # this instruction does not actually publish the port
 # just to show which ports are intended to be published
-EXPOSE 80 443
+EXPOSE	80 443
 
 # install entrykit for autoindex
 # by using render cmd included in entrykit, it is able to create config file from template
-RUN wget --no-check-certificate -O entrykit.tgz https://github.com/progrium/entrykit/releases/download/v0.4.0/entrykit_0.4.0_Linux_x86_64.tgz; \
+RUN	wget --no-check-certificate -O entrykit.tgz https://github.com/progrium/entrykit/releases/download/v0.4.0/entrykit_0.4.0_Linux_x86_64.tgz; \
 	tar -xvzf entrykit.tgz -C /bin; \
 	rm entrykit.tgz; \
 	chmod +x /bin/entrykit; \
