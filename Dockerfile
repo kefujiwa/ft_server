@@ -6,7 +6,7 @@
 #    By: kefujiwa <kefujiwa@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/07 18:28:18 by kefujiwa          #+#    #+#              #
-#    Updated: 2021/03/15 00:37:48 by kefujiwa         ###   ########.fr        #
+#    Updated: 2021/05/16 13:28:50 by kefujiwa         ###   ########.fr        #
 # **************************************************************************** #
 
 # set the base image from debian:buster
@@ -15,7 +15,7 @@ FROM debian:buster
 # set maintainer and version information
 LABEL maintainer="Kenshi Fujiwara <kefujiwa@student.42tokyo.jp>"
 LABEL version="1.0"
-LABEL description="Wordpress・phpMyAdmin・MySQLの環境が整っているWEBサーバの構築"
+LABEL description="LEMP stack on an Devian Buster server"
 
 # install necessary tools
 RUN apt-get update; \
