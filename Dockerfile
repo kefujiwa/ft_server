@@ -6,7 +6,7 @@
 #    By: kefujiwa <kefujiwa@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/07 18:28:18 by kefujiwa          #+#    #+#              #
-#    Updated: 2021/05/16 13:28:50 by kefujiwa         ###   ########.fr        #
+#    Updated: 2021/05/17 01:11:10 by kefujiwa         ###   ########.fr        #
 # **************************************************************************** #
 
 # set the base image from debian:buster
@@ -75,7 +75,8 @@ RUN	mkdir -p /etc/nginx/ssl; \
 RUN mv /tmp/supervisord.conf /etc/supervisor/conf.d/supervisord.conf; \
 	mv /tmp/default.tmpl /etc/nginx/sites-available/default.tmpl;
 
-# set default of expose port (able to omit expose port of -p option)
+# this instruction does not actually publish the port
+# just to show which ports are intended to be published
 EXPOSE 80 443
 
 # install entrykit for autoindex
